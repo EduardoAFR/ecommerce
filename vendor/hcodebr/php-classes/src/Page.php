@@ -9,12 +9,14 @@ class Page {
 	private $tpl; 
 	private $options = []; 
 	private $defaults = [
+		"header"=>true,
+		"footer"=>true,
 		"data" =>[]
 	];
 
 	public function __construct($opts = array(),$tpl_dir = "/views/"){
 
-		$this->options = array_merge($this->defaults,$opts);//Sobrescreve a ultima opção ($opts) como prioritário em caso de conflito com default, tendo assim a preferência
+		$this->options = array_merge($this->defaults,$opts);
 
 		$config = array(
 			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"].$tpl_dir,
@@ -28,12 +30,16 @@ class Page {
 
 	$this->setData($this->options["data"]);
 
+	if($this->options["header"] === true) $this->tpl->draw("header"); 
+
+
 	foreach ($this->options["data"] as $key => $value) {
 		$this->tpl->assign($key,$value);
 	}
 
-	$this->tpl->draw("header"); 
 	}
+
+
 
 	private function setData($data = array()){
 		foreach ($data as $key => $value) {
@@ -51,7 +57,7 @@ class Page {
 
 
 	public function __destruct(){
-		$this->tpl->draw("footer"); 
+		if($this->options["footer"] === true) $this->tpl->draw("footer"); 
 
 	}
 
