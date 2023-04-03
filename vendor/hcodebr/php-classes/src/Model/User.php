@@ -4,10 +4,12 @@ namespace Hcode\Model;
 
 use \Hcode\DB\Sql; 
 use \Hcode\Model;
+//use \Hcode\Mailer;
 
 class User extends Model {
 
 	const SESSION = "User";
+	const SECRET = "HcodePhp7_Secret"; 
 
 	public static function login($login,$password){
 
@@ -24,13 +26,16 @@ class User extends Model {
 
 		if(password_verify($password,$data["despassword"])===true){
 		
-			$user = new User(); 
-
+			$user = new User();
+ 
 			$user->setData($data);
-
+			 
 			$_SESSION[User::SESSION] = $user->getValues();
-
-			return $user; 
+			 
+			var_dump($_SESSION[User::SESSION]);
+			exit;
+			 
+			return $user;
 
 
 
@@ -136,7 +141,7 @@ class User extends Model {
 
 	}
 
-	public function getForgot($email){
+	public static function getForgot($email){
 
 
 		$sql = new Sql(); 
@@ -171,6 +176,18 @@ class User extends Model {
 
 				$dataRecovery = $results2[0]; 
 
+				$code = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128,User::SECRET , $datarecovery["idrecovery"], MCRYPT_MODE_ECB));
+
+				$link = "http://hcodecommerce.com.br/admin/forgot/reset?code=$code"; 
+
+				$mailer = new Mailer($data["desemail"],$data["desperson"],"Redefinir senha","forgot",array(
+					"name"=>$data["desperson"],
+					"link"=>$link
+				));
+ 
+ 				$mailer->send(); 
+
+ 				return $data; 
 			}
 		}
 	}
