@@ -72,6 +72,40 @@ public static function updateFile()
 
 }
 
+public function getProducts($related = true)
+{
+
+$sql = new Sql(); 
+
+	if($related === true) {
+
+		return $sql->select("
+			SELECT * FROM tb_products WHERE idproduct IN(
+			 SELECT a.idproduct 
+			 FROM tb_products a 
+			 INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct
+			 WHERE b.category = :idcategory
+			 );
+		 	",[
+		 		':idcategory'=>$this->getidcategory()
+		 ]); 
+	} else {
+
+		return $sql->select("
+			SELECT * FROM tb_products WHERE idproduct IN(
+			 SELECT a.idproduct 
+			 FROM tb_products a 
+			 INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct
+			 WHERE b.category = :idcategory
+			 );
+		 	",[
+		 		':idcategory'=>$this->getidcategory()
+		 ]);
+
+	}
+
+}
+
 }
 
 
