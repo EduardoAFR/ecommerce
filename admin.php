@@ -1,11 +1,12 @@
 <?php
 
+//use \Slim\Slim;
 use \Hcode\PageAdmin;
 use \Hcode\Model\User;  
 
 $app->get('/admin', function() {
 
-   //User::verifyLogin(); 
+   User::verifyLogin(); 
    
    $page = new PageAdmin(); 
 
@@ -17,7 +18,7 @@ $app->get('/admin', function() {
 $app->get('/admin/login',function(){
 
    $page = new PageAdmin([
-      "header"=> false,
+      "header"=>false,
       "footer"=>false
    ]); 
 

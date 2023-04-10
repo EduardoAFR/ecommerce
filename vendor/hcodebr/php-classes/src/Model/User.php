@@ -34,15 +34,22 @@ class User extends Model {
 			||
 			!(int)$_SESSION[User::SESSION]["iduser"] > 0 
 		){
+			//var_dump("checkPoint 1"); 
+			//exit;
+
 			//Não está logado
 			return false; 
 		}else{
 			if($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true){
-
+				//var_dump("checkPoint 2"); 
 				return true; 
 			}else if ($inadmin === false) {
+				//var_dump("checkPoint 3"); 
+				//exit; 
 				return true; 
 			}else{
+				//var_dump("checkPoint 4"); 
+				//exit; 
 				return false; 
 			}
 		}
@@ -66,16 +73,14 @@ class User extends Model {
 		
 			$user = new User();
  
-			$user->setData($data);
+			$user->setData($data); 
 			 
 			$_SESSION[User::SESSION] = $user->getValues();
 			 
-			var_dump($_SESSION[User::SESSION]);
-			exit;
+			//var_dump($_SESSION[User::SESSION]);
+			//exit;
 			 
 			return $user;
-
-
 
 		} else{
 			throw new \Exception("Usuário inexistente ou senha invalida.");
@@ -86,8 +91,8 @@ class User extends Model {
 	{
 
 		if(User::checkLogin($inadmin)){
-			header("Location: /admin/login");
-			exit;
+			header("Location: /admin"); //Tava admin/login acho que ta errado
+			//exit;
 		}
 
 	}
