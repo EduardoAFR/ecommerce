@@ -149,6 +149,9 @@ namespace Hcode\Model;
 		$rows = $sql->select("SELECT * FROM tb_products WHERE desurl = :desurl",[
 			':desurl'=>$desurl
 		]);
+
+			var_dump($rows);
+			exit;
 			$this->setData($rows[0]); 
 	}
 
